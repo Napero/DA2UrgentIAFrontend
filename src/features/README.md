@@ -1,16 +1,14 @@
 # Funcionalidades
 
-Crear cada funcionalidad en su propia carpeta al implementarla:
+Implementadas por P6:
 
-- `auth/`: login y sesión (P3).
-- `tickets/`: bandeja y detalle (P6); crear ticket y mis tickets (P3).
-- `reportes/`: resumen, SLA y listado (P6).
-- `notificaciones/`: consulta de notificaciones (P6).
-- `usuarios/`: alta y listado (P3).
+- tickets/: bandeja, detalle, asignación, estados y reclasificación.
+- reportes/: resumen, SLA y listado proyectado.
+- notificaciones/: consulta y filtros.
 
-Las páginas específicas pueden vivir dentro de cada carpeta. Reemplazar su
-placeholder en `src/app/App.tsx`; no mantener dos implementaciones de una pantalla.
+P3 continúa auth/, crear ticket y mis tickets dentro de tickets/, y usuarios/.
+La entrada de sesión y los guards ya están en src/shared/session/.
+Reemplazar los placeholders correspondientes en src/app/App.tsx.
 
-El layout y la navegación están en `src/app/`. El cliente HTTP, los tipos
-generados y los estados visuales reutilizables están en `src/shared/`.
-No crear modelos de endpoints manualmente: usar los contratos aprobados.
+Todos consumen los tipos generados y servicios compartidos. Ver
+[la conexión de P3 y los pendientes](../../docs/P6_FRONTEND.md).

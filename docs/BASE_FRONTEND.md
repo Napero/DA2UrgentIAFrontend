@@ -1,5 +1,8 @@
 # Base del frontend
 
+Este archivo explica la base inicial. El estado actual, las pantallas de P6 y
+la conexión de P3 están en [P6_FRONTEND.md](P6_FRONTEND.md).
+
 Esta rama prepara el trabajo de P6 y P3 sin requerir cambios de P1.
 Se puede instalar, navegar y compilar con el backend apagado.
 
@@ -67,13 +70,13 @@ separados por coma, sin modificar código. Usar `127.0.0.1` o el puerto de previ
 requiere agregarlos explícitamente. La URL del gateway no cambia con el puerto
 del frontend.
 
-## Siguiente integración
+## Integración actual
 
-1. Se incorporan los contratos aprobados y se generan sus tipos.
-2. P3 conecta login, sesión y protección de rutas con el cliente HTTP.
-3. P6 reemplaza los placeholders por bandeja, detalle y reportes.
-4. Se verifica el recorrido real contra el gateway, incluido el ticket pendiente
-   de clasificación.
+Los contratos y las pantallas de P6 ya están incorporados en feat/frontend-p6.
+La protección de rutas y el menú por rol reciben la sesión de P3; falta conectar
+su login, persistencia y pantallas. El recorrido final contra servicios reales
+se valida después de esa integración. Los flujos con fixtures ya tienen pruebas
+de navegador y el detalle sigue los tickets pendientes de clasificación.
 
 Se trabaja con PR hacia `dev/entrega-2`, merge commit y sin squash.
 Esta entrega de base queda en commits locales; no se publica ni integra sola.
