@@ -1,8 +1,9 @@
 # Implementación y entrega del frontend de P6
 
 La rama `feat/frontend-p6` contiene las pantallas de P6 y se apoya en
-`chore/frontend-base`. Los cambios permanecen locales hasta que Francisco los
-publique. No hay PR ni despliegue remoto hecho por el asistente.
+`chore/frontend-base`. El destino de integración es `dev/entrega-2`.
+La primera integración reúne ambas ramas con merge commits por indicación de
+Francisco. Publicar código no equivale a desplegarlo ni a confirmar el CI remoto.
 
 ## Qué está implementado
 
@@ -96,18 +97,18 @@ Se revisaron las cuatro pantallas en escritorio y móvil, con anchos de 320,
 
 ## Quién queda destrabado
 
-| Persona            | Qué puede hacer con esta rama                                                                          | Qué necesita antes                                     |
-| ------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------ |
-| P3, Florencia      | Login, sesión, crear ticket, mis tickets y usuarios sobre el layout, contratos y servicios compartidos | Que Francisco publique o comparta la rama              |
-| P1, Ana            | Integrar el despliegue del frontend y revisar CORS con el origen definitivo                            | URL pública del gateway para el build y rama publicada |
-| P4, Gustavo        | Incorporar el diagrama de componentes y las pantallas al informe                                       | Capturas definitivas del flujo real                    |
-| P5, Juan Sebastián | Verificar que sus notificaciones aparecen en la pantalla y confirmar el proveedor real                 | Datos reales, login conectado y backend operativo      |
-| P2, Santiago       | Validar las acciones del detalle y la transición al flujo asincrónico                                  | Datos reales y contrato actualizado si cambia el POST  |
+| Persona            | Qué puede hacer con esta rama                                                                          | Qué necesita antes                                    |
+| ------------------ | ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------- |
+| P3, Florencia      | Login, sesión, crear ticket, mis tickets y usuarios sobre el layout, contratos y servicios compartidos | Actualizar su copia desde dev/entrega-2               |
+| P1, Ana            | Integrar el despliegue del frontend y revisar CORS con el origen definitivo                            | URL pública del gateway para el build                 |
+| P4, Gustavo        | Incorporar el diagrama de componentes y las pantallas al informe                                       | Capturas definitivas del flujo real                   |
+| P5, Juan Sebastián | Verificar que sus notificaciones aparecen en la pantalla y confirmar el proveedor real                 | Datos reales, login conectado y backend operativo     |
+| P2, Santiago       | Validar las acciones del detalle y la transición al flujo asincrónico                                  | Datos reales y contrato actualizado si cambia el POST |
 
 ## Qué falta para cerrar la entrega
 
-- Publicar las ramas y pasar los PR y el CI remoto. Se conserva la política de
-  merge commit sin squash. Primero integrar la base y luego las pantallas de P6.
+- Revisar el CI remoto y mantener las próximas tareas en ramas con PR hacia
+  dev/entrega-2, conservando merge commits sin squash.
 - Completar las pantallas y la sesión de P3.
 - Probar desde el navegador el recorrido real: login, crear, clasificar, asignar,
   resolver, notificar y consultar reportes.

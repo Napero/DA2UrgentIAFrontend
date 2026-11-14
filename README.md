@@ -219,9 +219,10 @@ El CI verifica formato, lint, contratos, tests, build, navegador y construcción
 de la imagen con apertura directa de una ruta SPA. No necesita el backend ni
 secretos. Su ejecución remota se confirma cuando se publique la rama.
 
-Las tareas vuelven a dev/entrega-2 por PR con merge commit, sin squash.
-Primero integrar chore/frontend-base y después feat/frontend-p6. Los commits
-son chicos y usan Conventional Commits en español.
+La primera integración reúne chore/frontend-base y feat/frontend-p6 en
+dev/entrega-2, por indicación del responsable del repositorio. Las próximas tareas
+vuelven por PR con merge commit, sin squash. Los commits son chicos y usan
+Conventional Commits en español. main conserva la versión estable.
 
 ## Referencias técnicas
 

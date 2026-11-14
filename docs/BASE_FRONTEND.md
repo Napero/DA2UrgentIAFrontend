@@ -78,5 +78,5 @@ su login, persistencia y pantallas. El recorrido final contra servicios reales
 se valida después de esa integración. Los flujos con fixtures ya tienen pruebas
 de navegador y el detalle sigue los tickets pendientes de clasificación.
 
-Se trabaja con PR hacia `dev/entrega-2`, merge commit y sin squash.
-Esta entrega de base queda en commits locales; no se publica ni integra sola.
+La base se conserva en `chore/frontend-base` y se integra a `dev/entrega-2`
+con merge commit, sin squash. Las próximas tareas vuelven por PR a esa rama.
