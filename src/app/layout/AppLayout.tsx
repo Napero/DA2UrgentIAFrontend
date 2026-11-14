@@ -2,9 +2,21 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router'
 import { navegacion, secciones } from '../navigation'
 import { Icono } from '../../shared/ui/Icono'
+import { useSesion } from '../../shared/session/context'
 
 export function AppLayout() {
   const [menuAbierto, setMenuAbierto] = useState(false)
+  const { sesion, onCerrarSesion } = useSesion()
+  const menu = navegacion.filter(
+    (item) =>
+      item.ruta === '/' ||
+      (sesion &&
+        (item.ruta === '/usuarios'
+          ? sesion.usuario.rol === 'ADMIN'
+          : item.ruta === '/mis-tickets'
+            ? sesion.usuario.rol === 'SOLICITANTE'
+            : sesion.usuario.rol !== 'SOLICITANTE')),
+  )
   const { pathname } = useLocation()
   const titulo =
     secciones.find((seccion) => seccion.ruta === pathname)?.titulo ??
@@ -51,7 +63,7 @@ export function AppLayout() {
           aria-label="Navegación principal"
         >
           <p className="nav-label">ESPACIO DE TRABAJO</p>
-          {navegacion.map((item) => (
+          {menu.map((item) => (
             <NavLink
               to={item.ruta}
               key={item.ruta}
@@ -78,9 +90,27 @@ export function AppLayout() {
             <span aria-hidden="true">/</span>
             <strong>{titulo}</strong>
           </div>
-          <Link className="session-link" to="/login">
-            Iniciar sesión <Icono nombre="flecha" size={16} />
-          </Link>
+          {sesion ? (
+            <div className="session-user">
+              <span>
+                {sesion.usuario.nombre}
+                <small>{sesion.usuario.rol}</small>
+              </span>
+              {onCerrarSesion && (
+                <button
+                  className="button button-secondary"
+                  type="button"
+                  onClick={onCerrarSesion}
+                >
+                  Cerrar sesión
+                </button>
+              )}
+            </div>
+          ) : (
+            <Link className="session-link" to="/login">
+              Iniciar sesión <Icono nombre="flecha" size={16} />
+            </Link>
+          )}
         </header>
         <main id="contenido" className="main-content" tabIndex={-1}>
           <Outlet />

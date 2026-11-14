@@ -5,37 +5,88 @@ import { LoginPage } from '../pages/LoginPage'
 import { NoEncontradoPage } from '../pages/NoEncontradoPage'
 import { SeccionPendientePage } from '../pages/SeccionPendientePage'
 import { secciones } from './navigation'
+import {
+  SesionProvider,
+  type SesionProviderProps,
+} from '../shared/session/SesionProvider'
+import { RequiereRol } from '../shared/session/RequiereRol'
+import { BandejaPage } from '../features/tickets/BandejaPage'
+import { DetallePage } from '../features/tickets/DetallePage'
+import { ReportesPage } from '../features/reportes/ReportesPage'
+import { NotificacionesPage } from '../features/notificaciones/NotificacionesPage'
 
-export function App() {
+export type AppProps = Omit<SesionProviderProps, 'children'>
+
+// P3 conecta su estado de sesión y callbacks con estas props, sin duplicar clientes.
+export function App(props: AppProps) {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route element={<AppLayout />}>
-          <Route index element={<InicioPage />} />
-          {secciones.map((seccion) => (
+    <SesionProvider {...props}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route element={<AppLayout />}>
+            <Route index element={<InicioPage />} />
             <Route
-              key={seccion.ruta}
-              path={seccion.ruta}
-              element={<SeccionPendientePage seccion={seccion} />}
+              path="/tickets"
+              element={
+                <RequiereRol roles={['AGENTE', 'ADMIN']}>
+                  <BandejaPage />
+                </RequiereRol>
+              }
             />
-          ))}
-          <Route
-            path="/tickets/:ticketId"
-            element={
-              <SeccionPendientePage
-                seccion={{
-                  titulo: 'Detalle del ticket',
-                  descripcion:
-                    'El seguimiento de una solicitud, de principio a fin.',
-                  icono: 'ticket',
-                }}
-              />
-            }
-          />
-          <Route path="*" element={<NoEncontradoPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+            <Route
+              path="/tickets/:ticketId"
+              element={
+                <RequiereRol roles={['AGENTE', 'ADMIN']}>
+                  <DetallePage />
+                </RequiereRol>
+              }
+            />
+            <Route
+              path="/reportes"
+              element={
+                <RequiereRol roles={['AGENTE', 'ADMIN']}>
+                  <ReportesPage />
+                </RequiereRol>
+              }
+            />
+            <Route
+              path="/notificaciones"
+              element={
+                <RequiereRol roles={['AGENTE', 'ADMIN']}>
+                  <NotificacionesPage />
+                </RequiereRol>
+              }
+            />
+            {secciones
+              .filter((seccion) =>
+                ['/tickets/nuevo', '/mis-tickets', '/usuarios'].includes(
+                  seccion.ruta,
+                ),
+              )
+              .map((seccion) => (
+                <Route
+                  key={seccion.ruta}
+                  path={seccion.ruta}
+                  element={
+                    <RequiereRol
+                      roles={
+                        seccion.ruta === '/usuarios'
+                          ? ['ADMIN']
+                          : seccion.ruta === '/mis-tickets'
+                            ? ['SOLICITANTE']
+                            : ['SOLICITANTE', 'AGENTE', 'ADMIN']
+                      }
+                    >
+                      <SeccionPendientePage seccion={seccion} />
+                    </RequiereRol>
+                  }
+                />
+              ))}
+            <Route path="*" element={<NoEncontradoPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </SesionProvider>
   )
 }

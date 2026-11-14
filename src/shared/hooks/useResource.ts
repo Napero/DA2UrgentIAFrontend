@@ -5,7 +5,12 @@ export function useResource<T>(
   load: (signal: AbortSignal) => Promise<T>,
 ) {
   const [revision, setRevision] = useState(0)
-  const [state, setState] = useState<{ key: string; data?: T; error?: Error }>({
+  const [state, setState] = useState<{
+    key: string
+    load?: typeof load
+    data?: T
+    error?: Error
+  }>({
     key: '',
   })
   const requestKey = key + ':' + revision
@@ -17,12 +22,14 @@ export function useResource<T>(
       .then(() => load(controller.signal))
       .then(
         (data) => {
-          if (!controller.signal.aborted) setState({ key: requestKey, data })
+          if (!controller.signal.aborted)
+            setState({ key: requestKey, load, data })
         },
         (error) => {
           if (!controller.signal.aborted)
             setState({
               key: requestKey,
+              load,
               error:
                 error instanceof Error
                   ? error
@@ -34,9 +41,11 @@ export function useResource<T>(
   }, [requestKey, load])
 
   return {
-    data: state.key === requestKey ? state.data : undefined,
-    error: state.key === requestKey ? state.error : undefined,
-    loading: state.key !== requestKey,
+    data:
+      state.key === requestKey && state.load === load ? state.data : undefined,
+    error:
+      state.key === requestKey && state.load === load ? state.error : undefined,
+    loading: state.key !== requestKey || state.load !== load,
     reload,
   }
 }

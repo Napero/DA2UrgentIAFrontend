@@ -8,17 +8,18 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "npm run typecheck && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -b",
+    "typecheck": "tsc -b && tsc -p tsconfig.e2e.json",
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "node --experimental-strip-types --test src/shared/api/client.test.ts",
+    "test": "node --experimental-strip-types --test src/shared/api/client.test.ts src/features/tickets/model.test.ts",
     "api:generate": "node scripts/generate-api-types.mjs",
     "check": "npm run format:check && npm run lint && npm test && npm run build",
     "api:generate:all": "node scripts/api-contracts.mjs",
-    "api:check": "node scripts/api-contracts.mjs --check"
+    "api:check": "node scripts/api-contracts.mjs --check",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "react": "^19.3.1",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
+    "@playwright/test": "^1.65.1",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",

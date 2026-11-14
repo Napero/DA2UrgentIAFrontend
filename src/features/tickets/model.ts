@@ -84,6 +84,7 @@ export function fecha(valor: string | null | undefined) {
 export function textoEnum(valor: string | null | undefined) {
   return valor
     ? valor
+        .replace(/([a-z])([A-Z])/g, '$1 $2')
         .toLowerCase()
         .replaceAll('_', ' ')
         .replace(/^./, (letra) => letra.toUpperCase())
