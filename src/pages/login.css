@@ -1,0 +1,39 @@
+.login-panel {
+  padding: 28px;
+}
+.login-form {
+  display: grid;
+  gap: 18px;
+}
+.login-form label {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #425b4e;
+}
+.login-form input {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #cbd8cc;
+  border-radius: 7px;
+  padding: 10px 12px;
+  background: #fff;
+  color: #203b35;
+  font-size: 14px;
+}
+.login-form input:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+.login-form .notice {
+  margin: 0;
+}
+.login-form .notice ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+.login-form button {
+  justify-self: start;
+  min-width: 140px;
+}
