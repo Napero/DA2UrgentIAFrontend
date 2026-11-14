@@ -20,6 +20,9 @@ export function crearServicios(api: ApiClient) {
       }),
     obtenerTicket: (id: string, signal?: AbortSignal) =>
       api.request<Ticket>('/api/tickets/' + encodeURIComponent(id), { signal }),
+    // Sin reintentos: crear no es idempotente y un reintento podría duplicar el ticket.
+    crearTicket: (body: Tickets['schemas']['CrearTicketRequest']) =>
+      api.request<Ticket>('/api/tickets', { method: 'POST', body }),
     asignarTicket: (
       id: string,
       body: Tickets['schemas']['AsignarTicketRequest'],

@@ -72,12 +72,12 @@ Estas son rutas del navegador, no endpoints nuevos.
 | Ruta               | Pantalla                                      | Responsable | Estado       |
 | ------------------ | --------------------------------------------- | ----------- | ------------ |
 | /                  | Inicio y navegación                           | P6          | Implementado |
-| /login             | Login y sesión                                | P3          | Pendiente    |
+| /login             | Login y sesión                                | P3          | Implementado |
 | /tickets           | Bandeja con filtros y paginación              | P6          | Implementado |
 | /tickets/:ticketId | Detalle, asignación, estado y reclasificación | P6          | Implementado |
 | /reportes          | Resumen, SLA y listado                        | P6          | Implementado |
 | /notificaciones    | Consulta y filtros                            | P6          | Implementado |
-| /tickets/nuevo     | Crear ticket                                  | P3          | Pendiente    |
+| /tickets/nuevo     | Crear ticket                                  | P3          | Implementado |
 | /mis-tickets       | Tickets del solicitante                       | P3          | Pendiente    |
 | /usuarios          | Alta y listado                                | P3          | Pendiente    |
 
@@ -85,6 +85,11 @@ Bandeja, detalle, reportes y notificaciones requieren AGENTE o ADMIN. Usuarios
 requiere ADMIN. Mis tickets está reservado al SOLICITANTE; crear ticket admite
 los tres roles. Los guards y el menú ya están preparados. El gateway conserva
 la autorización real.
+
+Crear ticket valida los largos del contrato (título de 5 a 120 caracteres,
+descripción de 10 a 2000) antes de enviar y muestra el resultado: estado,
+prioridad y plazo, o un aviso si la IA todavía no lo clasificó. No reintenta
+solo: si se corta la conexión, avisa que el ticket puede haberse creado.
 
 Los filtros se guardan en la URL. El detalle consulta cada cinco segundos
 mientras el ticket siga pendiente de clasificación y la pestaña esté visible.

@@ -1,0 +1,63 @@
+.crear-panel {
+  padding: 28px;
+}
+.crear-form {
+  display: grid;
+  gap: 20px;
+  max-width: 720px;
+}
+.crear-form label {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #425b4e;
+}
+.crear-form input,
+.crear-form textarea {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #cbd8cc;
+  border-radius: 7px;
+  padding: 10px 12px;
+  background: #fff;
+  color: #203b35;
+  font-size: 14px;
+  font-family: inherit;
+}
+.crear-form textarea {
+  min-height: 160px;
+  resize: vertical;
+}
+.crear-form input:focus-visible,
+.crear-form textarea:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+.crear-form [aria-invalid='true'] {
+  border-color: #c9774a;
+}
+.crear-ayuda {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-muted);
+}
+.crear-error {
+  color: #a4501f;
+}
+.crear-form .notice {
+  margin: 0;
+}
+.crear-form button {
+  justify-self: start;
+  min-width: 160px;
+}
+.crear-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}

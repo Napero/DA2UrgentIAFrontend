@@ -12,6 +12,7 @@ import {
 import { RequiereRol } from '../shared/session/RequiereRol'
 import { BandejaPage } from '../features/tickets/BandejaPage'
 import { DetallePage } from '../features/tickets/DetallePage'
+import { CrearTicketPage } from '../features/tickets/CrearTicketPage'
 import { ReportesPage } from '../features/reportes/ReportesPage'
 import { NotificacionesPage } from '../features/notificaciones/NotificacionesPage'
 
@@ -31,6 +32,14 @@ export function App(props: AppProps) {
               element={
                 <RequiereRol roles={['AGENTE', 'ADMIN']}>
                   <BandejaPage />
+                </RequiereRol>
+              }
+            />
+            <Route
+              path="/tickets/nuevo"
+              element={
+                <RequiereRol roles={['SOLICITANTE', 'AGENTE', 'ADMIN']}>
+                  <CrearTicketPage />
                 </RequiereRol>
               }
             />
@@ -60,9 +69,7 @@ export function App(props: AppProps) {
             />
             {secciones
               .filter((seccion) =>
-                ['/tickets/nuevo', '/mis-tickets', '/usuarios'].includes(
-                  seccion.ruta,
-                ),
+                ['/mis-tickets', '/usuarios'].includes(seccion.ruta),
               )
               .map((seccion) => (
                 <Route
@@ -73,9 +80,7 @@ export function App(props: AppProps) {
                       roles={
                         seccion.ruta === '/usuarios'
                           ? ['ADMIN']
-                          : seccion.ruta === '/mis-tickets'
-                            ? ['SOLICITANTE']
-                            : ['SOLICITANTE', 'AGENTE', 'ADMIN']
+                          : ['SOLICITANTE']
                       }
                     >
                       <SeccionPendientePage seccion={seccion} />
