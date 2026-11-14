@@ -45,6 +45,17 @@ El README incluye instalación, comandos, estructura y puntos de integración
 para P3. El CI se ejecutará en GitHub cuando se publique la rama; la validación
 local no equivale a una ejecución remota del workflow.
 
+## Ajuste de dependencias
+
+La instalación inicial detectó la alerta
+[GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249)
+en minimatch, una dependencia de las herramientas de lint.
+Se agregó un override acotado a `@typescript-eslint/typescript-estree` para usar
+minimatch 11.0.8. El ajuste queda en un commit separado de la funcionalidad.
+Al actualizar typescript-eslint, revisar si ya incluye una versión corregida y
+se puede retirar el override. La corrección se verifica con lint, tests, build
+y `npm audit`.
+
 ## Siguiente integración
 
 1. P1 habilita CORS para el origen del front en el gateway.
