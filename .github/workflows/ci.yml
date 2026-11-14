@@ -1,0 +1,37 @@
+name: Frontend CI
+
+on:
+  push:
+  pull_request:
+    branches: [main, dev/entrega-2]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: frontend-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validar:
+    name: Formato, lint, tests y compilación
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v6
+      - name: Configurar Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Instalar dependencias
+        run: npm ci
+      - name: Revisar formato
+        run: npm run format:check
+      - name: Revisar código
+        run: npm run lint
+      - name: Ejecutar tests del cliente HTTP
+        run: npm test
+      - name: Compilar y verificar tipos
+        run: npm run build
