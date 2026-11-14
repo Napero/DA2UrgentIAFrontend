@@ -117,6 +117,25 @@ para cada pantalla. Reemplazar únicamente los placeholders de P3 en App.tsx.
 
 Ver el detalle del contrato de integración en [P6_FRONTEND.md](docs/P6_FRONTEND.md).
 
+### Sesión implementada (P3)
+
+`main.tsx` envuelve la aplicación con `AutenticacionProvider`
+(`src/shared/session/`), que pasa la sesión y los callbacks a `App` desde
+`src/app/AppConSesion.tsx`. La pantalla de login está en `src/pages/LoginPage.tsx`.
+
+| Tema               | Comportamiento                                                                                                                                 |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Login              | `POST /api/auth/login` con un cliente público; un 401 se muestra en el formulario                                                              |
+| Persistencia       | `localStorage` (clave `urgentia.sesion`): sobrevive a recargar y se comparte entre pestañas hasta que vence el token                           |
+| Varias pestañas    | Si una cierra sesión o recibe un 401, las demás vuelven al login; si una inicia sesión, las demás la toman. Si entra otro usuario, se recargan |
+| Vencimiento        | Se calcula con `expiresIn`; una sesión guardada vencida se descarta y la activa se cierra 30 s antes de vencer                                 |
+| 401 durante el uso | Borra la sesión y abre `/login?motivo=vencida&volverA=...` para retomar donde estaba                                                           |
+| Cerrar sesión      | Borra la sesión y vuelve a `/login`; la aplicación se recarga para no conservar datos del usuario anterior                                     |
+| Destino tras login | La ruta pedida (`volverA`, solo rutas internas) o, si no hay, `/mis-tickets` para SOLICITANTE y `/tickets` para el resto                       |
+
+Pruebas: `src/shared/session/almacenamiento.test.ts` (unitarias) y
+`tests/e2e/p3-sesion.spec.ts` (navegador, sobre la aplicación real con el gateway interceptado).
+
 ## Contratos y tipos
 
 Se copiaron sin modificar los contratos de tickets, usuarios, reportes y
