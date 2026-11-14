@@ -58,7 +58,7 @@ test('asigna agentes activos incluso si vienen en más de una página', async ({
   page,
 }) => {
   const state = await mockApi(page)
-  await abrir(page, '/tickets/' + id(1))
+  await abrir(page, '/tickets/' + id(3))
   const select = page.getByRole('combobox', { name: 'Agente', exact: true })
   await expect(select.locator('option')).toHaveCount(3)
   await expect(
@@ -74,7 +74,7 @@ test('asigna agentes activos incluso si vienen en más de una página', async ({
   ).toBeVisible()
   expect(state.llamadas.filter((call) => call.method === 'PATCH')).toEqual([
     expect.objectContaining({
-      path: '/api/tickets/' + id(1) + '/asignacion',
+      path: '/api/tickets/' + id(3) + '/asignacion',
       body: { agenteId },
     }),
   ])
@@ -120,11 +120,11 @@ test('reclasificación maneja IA caída y luego actualiza el detalle', async ({
 }) => {
   const state = await mockApi(page)
   state.error = {
-    path: '/api/tickets/' + id(1) + '/reclasificacion',
+    path: '/api/tickets/' + id(3) + '/reclasificacion',
     status: 503,
     mensaje: 'IA no disponible. Intentá nuevamente.',
   }
-  await abrir(page, '/tickets/' + id(1))
+  await abrir(page, '/tickets/' + id(3))
   await page.getByRole('button', { name: 'Reclasificar', exact: true }).click()
   await expect(page.getByRole('alert')).toContainText('IA no disponible.')
   state.error = null
@@ -143,7 +143,7 @@ test('un ticket pendiente se actualiza solo y uno cerrado no ofrece acciones', a
   await expect(page.locator('.detail-badges')).toContainText(
     'Pendiente de clasificación',
   )
-  await expect(page.locator('.detail-badges')).toContainText('Clasificado', {
+  await expect(page.locator('.detail-badges')).toContainText('Escalado', {
     timeout: 9000,
   })
   state.tickets[0]!.estado = 'CERRADO'

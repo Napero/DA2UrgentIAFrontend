@@ -21,17 +21,17 @@ export function crearTicket(numero = 1, cambios: Partial<Ticket> = {}): Ticket {
     descripcion: 'La aplicación no permite ingresar a los usuarios del área.',
     solicitanteId: id(99),
     agenteAsignadoId: null,
-    estado: 'CLASIFICADO',
+    estado: numero <= 2 ? 'ESCALADO' : 'CLASIFICADO',
     prioridad: numero <= 2 ? 'P1' : 'P3',
     fechaLimiteSla: '2026-11-14T15:00:00Z',
     requiereRevisionManual: false,
-    motivoEscalamiento: null,
+    motivoEscalamiento: numero <= 2 ? 'Prioridad P1' : null,
     clasificacion: {
       categoria: numero <= 2 ? 'INCIDENTE' : 'CONSULTA',
-      urgencia: 'ALTA',
-      impacto: 'ALTO',
+      urgencia: numero <= 2 ? 'ALTA' : 'MEDIA',
+      impacto: numero <= 2 ? 'ALTO' : 'MEDIO',
       moduloAfectado: 'AUTENTICACION',
-      requiereEscalamiento: false,
+      requiereEscalamiento: numero <= 2,
       confianza: 0.9,
       fecha: ahora,
       justificacion: 'Clasificación de prueba.',
@@ -240,9 +240,19 @@ export async function mockApi(page: Page) {
         if (ticket.estado === 'CLASIFICADO') ticket.estado = 'ASIGNADO'
       } else if (accion === 'estado') {
         ticket.estado = (body as { estado: Ticket['estado'] }).estado
+        if (ticket.estado === 'ESCALADO')
+          ticket.motivoEscalamiento = (body as { motivo: string }).motivo
       } else if (accion === 'reclasificacion') {
-        ticket.estado = 'CLASIFICADO'
+        ticket.estado = 'ESCALADO'
         ticket.prioridad = 'P1'
+        ticket.motivoEscalamiento = 'Prioridad P1'
+        if (ticket.clasificacion)
+          ticket.clasificacion = {
+            ...ticket.clasificacion,
+            urgencia: 'ALTA',
+            impacto: 'ALTO',
+            requiereEscalamiento: true,
+          }
       }
       ticket.fechaActualizacion = new Date().toISOString()
       return responder(ticket)
