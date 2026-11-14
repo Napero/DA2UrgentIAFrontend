@@ -30,8 +30,9 @@ Luego iniciar Vite:
 npm run dev
 ```
 
-Abrir **http://localhost:5173**. El puerto es fijo para mantener estable el origen
-que P1 debe autorizar en CORS. Si está ocupado, detener la otra instancia.
+Abrir **http://localhost:5173**. Este es el origen habilitado por defecto en el
+gateway. Vite usa puerto estricto para evitar cambiar de origen sin aviso.
+Si está ocupado, detener la otra instancia o usar otro puerto como se explica abajo.
 
 La base visual funciona con el backend apagado. Las pantallas de negocio todavía
 son placeholders explícitos; no se simulan sesiones, tickets ni métricas.
@@ -46,10 +47,30 @@ La URL debe apuntar al **gateway**, nunca a un microservicio individual. Reinici
 Vite después de cambiar `.env.local`. Las variables `VITE_*` son públicas y se
 incorporan al bundle: no incluir contraseñas, secretos JWT ni API keys.
 
-Para las llamadas reales, P1 debe habilitar CORS para `http://localhost:5173`,
-los métodos de las operaciones y los headers `Authorization`, `Content-Type` y
-`X-Correlation-Id`. Si se usa `127.0.0.1` en el navegador, ese es otro origen y
-también debe autorizarse. No se agregó un proxy que oculte esta dependencia.
+P1 integró CORS en `dev/entrega-2` del backend, commit `31bf44a`. El gateway
+habilita `http://localhost:5173` por defecto, los métodos `GET`, `POST` y `PATCH`,
+y los headers `Authorization`, `Content-Type` y `X-Correlation-Id`. Expone
+`X-Correlation-Id` y atiende el preflight `OPTIONS` sin pedir token.
+
+Para usar otro puerto no hace falta cambiar código. Por ejemplo:
+
+```sh
+npm run dev -- --port 3000
+```
+
+Agregar el origen en el **`.env` del backend**, separado por coma:
+
+```dotenv
+CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
+```
+
+Recrear el gateway para que tome el cambio de entorno. `CORS_ALLOWED_ORIGINS`
+pertenece al gateway; no va en el `.env.local` del frontend. `VITE_API_URL` sigue
+siendo `http://localhost:8080` aunque el front cambie de puerto.
+
+Usar `http://localhost:5173` para el desarrollo habitual. `127.0.0.1` es otro
+origen: si se usa en el navegador, hay que agregarlo a la lista. Para probar
+peticiones desde `npm run preview`, agregar también `http://localhost:4173`.
 
 ## Comandos
 
@@ -176,7 +197,7 @@ La configuración inicial está en `chore/frontend-base`.
 
 ## Pendientes de integración y despliegue
 
-- CORS del gateway y contratos aprobados.
+- Incorporar los contratos aprobados y generar sus tipos.
 - Login, sesión y rutas por rol de P3.
 - Implementación de las pantallas de negocio y consulta periódica de tickets pendientes.
 - Dockerfile y configuración SPA del servidor con P1. El servidor debe devolver

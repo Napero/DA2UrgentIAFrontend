@@ -56,13 +56,23 @@ Al actualizar typescript-eslint, revisar si ya incluye una versión corregida y
 se puede retirar el override. La corrección se verifica con lint, tests, build
 y `npm audit`.
 
+## Configuración acordada con P1
+
+CORS ya está integrado en `dev/entrega-2` del backend, commit `31bf44a`.
+El frontend usa `http://localhost:5173` y `VITE_API_URL=http://localhost:8080`.
+El gateway permite los headers del cliente HTTP y atiende el preflight sin token.
+
+Otros orígenes se agregan a `CORS_ALLOWED_ORIGINS` en el `.env` del backend,
+separados por coma, sin modificar código. Usar `127.0.0.1` o el puerto de preview
+requiere agregarlos explícitamente. La URL del gateway no cambia con el puerto
+del frontend.
+
 ## Siguiente integración
 
-1. P1 habilita CORS para el origen del front en el gateway.
-2. Se incorporan los contratos aprobados y se generan sus tipos.
-3. P3 conecta login, sesión y protección de rutas con el cliente HTTP.
-4. P6 reemplaza los placeholders por bandeja, detalle y reportes.
-5. Se verifica el recorrido real contra el gateway, incluido el ticket pendiente
+1. Se incorporan los contratos aprobados y se generan sus tipos.
+2. P3 conecta login, sesión y protección de rutas con el cliente HTTP.
+3. P6 reemplaza los placeholders por bandeja, detalle y reportes.
+4. Se verifica el recorrido real contra el gateway, incluido el ticket pendiente
    de clasificación.
 
 Se trabaja con PR hacia `dev/entrega-2`, merge commit y sin squash.
