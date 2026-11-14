@@ -1,14 +1,14 @@
 # Tipos generados
 
-Esta carpeta recibirá los tipos de los contratos OpenAPI aprobados.
+Tipos de los cuatro contratos aprobados de contracts/. Su procedencia está en
+contracts/source.json. No editar los .d.ts a mano.
 
-Ejemplo, cuando el archivo del contrato esté disponible en este repo:
+Desde la raíz:
 
 ```sh
-npm run api:generate -- ./contracts/reporting-service.yaml reporting
+npm run api:generate:all
+npm run api:check
 ```
 
-Esto crea `reporting.d.ts`. Los archivos generados deben versionarse junto
-con la versión del contrato utilizada; no deben editarse a mano.
-
-Todavía no se copiaron contratos ni se generaron modelos de endpoints.
+Los alias de uso de la aplicación están en ../types.ts y apuntan a estos tipos;
+no duplican los modelos del backend.

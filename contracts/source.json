@@ -1,0 +1,23 @@
+{
+  "rama": "dev/entrega-2",
+  "commit": "31bf44aa71a2d9e58648ed92706a32a8de9ad9d2",
+  "archivos": [
+    {
+      "archivo": "user-service.yaml",
+      "sha256": "f4ec88e7f40b9ef1e7d8ac9c9998939c3b1663aef4a0aeb292e7cbe6f5432644"
+    },
+    {
+      "archivo": "ticket-service.yaml",
+      "sha256": "fa2bdfe33199e00d592f8ab4f453d18f831eeca8e557aa767748c194c7034a6a"
+    },
+    {
+      "archivo": "reporting-service.yaml",
+      "sha256": "b4b2c7bd21c6bb6c6ebe89cff6c6199cbd45ba7b19afdc646f3d0983ff6fb631"
+    },
+    {
+      "archivo": "notification-service.yaml",
+      "sha256": "091a368fb3bb7ab2a43168b74f8bca1592c4baeaf744bb55eff3f8bf7d309d5f"
+    }
+  ],
+  "repositorio": "https://github.com/AVFare/DA2UrgentIABackend"
+}
