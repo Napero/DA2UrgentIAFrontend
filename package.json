@@ -14,7 +14,9 @@
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "node --experimental-strip-types --test src/shared/api/client.test.ts"
+    "test": "node --experimental-strip-types --test src/shared/api/client.test.ts",
+    "api:generate": "node scripts/generate-api-types.mjs",
+    "check": "npm run format:check && npm run lint && npm test && npm run build"
   },
   "dependencies": {
     "react": "^19.3.1",
