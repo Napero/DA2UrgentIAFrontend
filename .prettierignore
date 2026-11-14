@@ -3,3 +3,4 @@ dist/
 coverage/
 package-lock.json
 src/shared/api/generated/
+contracts/*.yaml
