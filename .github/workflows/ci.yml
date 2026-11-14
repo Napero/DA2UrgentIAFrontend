@@ -16,7 +16,7 @@ jobs:
   validar:
     name: Formato, lint, tests y compilación
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Descargar código
         uses: actions/checkout@v6
@@ -31,7 +31,23 @@ jobs:
         run: npm run format:check
       - name: Revisar código
         run: npm run lint
-      - name: Ejecutar tests del cliente HTTP
+      - name: Verificar contratos y tipos generados
+        run: npm run api:check
+      - name: Ejecutar tests unitarios
         run: npm test
       - name: Compilar y verificar tipos
         run: npm run build
+      - name: Instalar Chromium para las pruebas
+        run: npx playwright install --with-deps chromium
+      - name: Probar los flujos de P6 en navegador
+        run: npm run test:e2e
+      - name: Construir y probar la imagen del frontend
+        run: |
+          docker build --build-arg VITE_API_URL=http://localhost:8080 -t urgentia-frontend:ci .
+          docker run -d --name frontend-ci -p 127.0.0.1:4174:80 urgentia-frontend:ci
+          curl --retry 10 --retry-connrefused --retry-delay 1 -fsS http://localhost:4174/health
+          curl -fsS http://localhost:4174/reportes -o /tmp/urgentia-spa.html
+          node --input-type=module -e 'import fs from "node:fs"; import assert from "node:assert/strict"; assert.ok(fs.readFileSync("/tmp/urgentia-spa.html", "utf8").includes("id=\"root\""))'
+      - name: Limpiar contenedor de prueba
+        if: always()
+        run: docker rm -f frontend-ci || true
