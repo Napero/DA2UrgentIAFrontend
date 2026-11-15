@@ -7,6 +7,7 @@ import type {
   FiltrosTickets,
   FiltrosNotificaciones,
   FiltrosReportes,
+  FiltrosUsuarios,
   Ticket,
   Usuario,
 } from './types'
@@ -59,6 +60,14 @@ export function crearServicios(api: ApiClient) {
       } while (page < totalPages)
       return usuarios
     },
+    listarUsuarios: (query: FiltrosUsuarios, signal?: AbortSignal) =>
+      api.request<Users['schemas']['PaginaUsuarios']>('/api/usuarios', {
+        query,
+        signal,
+      }),
+    // Sin reintentos, igual que crearTicket: un reintento podría dar 409 o duplicar el alta.
+    crearUsuario: (body: Users['schemas']['CrearUsuarioRequest']) =>
+      api.request<Usuario>('/api/usuarios', { method: 'POST', body }),
     resumen: (signal?: AbortSignal) =>
       api.request<Reports['schemas']['ResumenDto']>('/api/reportes/resumen', {
         signal,

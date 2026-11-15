@@ -2,7 +2,10 @@ import type {
   components as Tickets,
   operations as TicketOperations,
 } from './generated/ticket-service'
-import type { components as Users } from './generated/user-service'
+import type {
+  components as Users,
+  operations as UserOperations,
+} from './generated/user-service'
 import type {
   components as Reports,
   paths as ReportPaths,
@@ -34,4 +37,7 @@ export type FiltrosReportes = NonNullable<
 >
 export type FiltrosNotificaciones = NonNullable<
   NotificationOperations['listar_notificaciones_api_notificaciones_get']['parameters']['query']
+>
+export type FiltrosUsuarios = NonNullable<
+  UserOperations['listarUsuarios']['parameters']['query']
 >

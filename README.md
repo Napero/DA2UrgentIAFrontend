@@ -80,7 +80,7 @@ Estas son rutas del navegador, no endpoints nuevos.
 | /tickets/nuevo         | Crear ticket                                  | P3          | Implementado |
 | /mis-tickets           | Tickets del solicitante                       | P3          | Implementado |
 | /mis-tickets/:ticketId | Detalle de solo lectura del solicitante       | P3          | Implementado |
-| /usuarios              | Alta y listado                                | P3          | Pendiente    |
+| /usuarios              | Alta y listado                                | P3          | Implementado |
 
 Bandeja, detalle, reportes y notificaciones requieren AGENTE o ADMIN. Usuarios
 requiere ADMIN. Mis tickets está reservado al SOLICITANTE; crear ticket admite
@@ -97,6 +97,11 @@ tiene su propio detalle de solo lectura. Mientras un ticket está pendiente de
 clasificación, consulta cada cinco segundos solo ese ticket
 (`GET /api/tickets/{id}`) y lo actualiza en el lugar, sin recargar la lista;
 sin pendientes o con la pestaña oculta, no consulta.
+
+Usuarios (solo ADMIN) lista con filtro por rol y da de alta con nombre, email,
+contraseña inicial y rol. Valida antes de enviar con las reglas de user-service;
+un email repetido (409) se marca en el campo. La contraseña se limita a 72
+caracteres, el máximo que admite BCrypt.
 
 Los filtros se guardan en la URL. El detalle consulta cada cinco segundos
 mientras el ticket siga pendiente de clasificación y la pestaña esté visible.
