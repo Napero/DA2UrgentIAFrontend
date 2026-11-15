@@ -81,11 +81,6 @@ export function borrarSesion(almacen: Almacen | null) {
   }
 }
 
-/** Pantalla a la que va cada rol después de iniciar sesión, si no pidió otra. */
-export function destinoInicial(rol: Rol) {
-  return rol === 'SOLICITANTE' ? '/mis-tickets' : '/tickets'
-}
-
 /** Solo acepta rutas internas de la aplicación, para no redirigir a otro sitio. */
 export function rutaDeRetornoSegura(valor: unknown): string | null {
   if (

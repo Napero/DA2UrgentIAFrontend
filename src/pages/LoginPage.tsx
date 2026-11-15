@@ -2,10 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { Link, Navigate, useLocation } from 'react-router'
 import { ApiError, type DetalleError } from '../shared/api'
 import { useAutenticacion } from '../shared/session/autenticacion'
-import {
-  destinoInicial,
-  rutaDeRetornoSegura,
-} from '../shared/session/almacenamiento'
+import { rutaDeRetornoSegura } from '../shared/session/almacenamiento'
 import { EstadoError } from '../shared/ui/EstadoError'
 import './login.css'
 
@@ -48,14 +45,8 @@ export function LoginPage() {
     document.title = 'Iniciar sesión · UrgentIA'
   }, [])
 
-  // Con sesión iniciada no hay nada que hacer acá: va a la pantalla pedida o a la de su rol.
-  if (autenticacion?.sesion)
-    return (
-      <Navigate
-        to={volverA ?? destinoInicial(autenticacion.sesion.usuario.rol)}
-        replace
-      />
-    )
+  // Con sesión iniciada no hay nada que hacer acá: va a la pantalla pedida o al inicio.
+  if (autenticacion?.sesion) return <Navigate to={volverA ?? '/'} replace />
 
   const enviar = async (event: FormEvent) => {
     event.preventDefault()

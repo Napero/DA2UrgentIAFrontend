@@ -5,7 +5,6 @@ import {
   MARGEN_VENCIMIENTO_MS,
   borrarSesion,
   crearSesionGuardada,
-  destinoInicial,
   guardarSesion,
   leerSesion,
   rutaDeRetornoSegura,
@@ -100,12 +99,6 @@ test('sin almacenamiento disponible no falla', () => {
   assert.equal(leerSesion(null, AHORA), null)
   guardarSesion(roto, crearSesionGuardada(respuesta, AHORA))
   borrarSesion(roto)
-})
-
-test('cada rol empieza en su pantalla', () => {
-  assert.equal(destinoInicial('SOLICITANTE'), '/mis-tickets')
-  assert.equal(destinoInicial('AGENTE'), '/tickets')
-  assert.equal(destinoInicial('ADMIN'), '/tickets')
 })
 
 test('solo vuelve a rutas internas que no sean el login', () => {
