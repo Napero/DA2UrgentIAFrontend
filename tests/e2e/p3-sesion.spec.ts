@@ -109,22 +109,34 @@ async function ingresar(page: Page, email: string, password: string) {
   await page.getByRole('button', { name: 'Ingresar' }).click()
 }
 
+// Después del login, si no se había pedido otra pantalla, todos los roles van al inicio.
+const INICIO = /localhost:\d+\/$/
+
 const sesionGuardada = (page: Page) =>
   page.evaluate((clave) => window.localStorage.getItem(clave), CLAVE_SESION)
 
-test('un agente inicia sesión, la bandeja usa su token y la sesión sobrevive a una recarga', async ({
+test('un agente inicia sesión, llega al inicio, la bandeja usa su token y la sesión sobrevive a una recarga', async ({
   page,
 }) => {
   const estado = await mockGateway(page)
   await page.goto('/login')
   await ingresar(page, 'guardia@urgentia.local', 'Agente123!')
 
-  await expect(page).toHaveURL(/\/tickets$/)
+  await expect(page).toHaveURL(INICIO)
+  await expect(
+    page.getByRole('heading', { name: /Tu mesa de ayuda/ }),
+  ).toBeVisible()
   await expect(page.getByText('Gustavo Guardia')).toBeVisible()
   const login = estado.llamadas.find(
     (llamada) => llamada.path === '/api/auth/login',
   )
   expect(login?.token).toBeUndefined()
+
+  await page
+    .getByRole('navigation', { name: 'Navegación principal' })
+    .getByRole('link', { name: 'Bandeja de tickets' })
+    .click()
+  await expect(page).toHaveURL(/\/tickets$/)
   await expect
     .poll(() =>
       estado.llamadas.some(
@@ -155,14 +167,14 @@ test('con credenciales incorrectas avisa en el formulario y no guarda nada', asy
   expect(await sesionGuardada(page)).toBeNull()
 })
 
-test('un solicitante empieza en mis tickets y el menú no le ofrece la bandeja', async ({
+test('un solicitante empieza en el inicio y el menú no le ofrece la bandeja', async ({
   page,
 }) => {
   await mockGateway(page)
   await page.goto('/login')
   await ingresar(page, 'solicitante@urgentia.local', 'Usuario123!')
 
-  await expect(page).toHaveURL(/\/mis-tickets$/)
+  await expect(page).toHaveURL(INICIO)
   const menu = page.getByRole('navigation', { name: 'Navegación principal' })
   await expect(menu.getByRole('link', { name: 'Mis tickets' })).toBeVisible()
   await expect(
@@ -188,7 +200,7 @@ test('cerrar sesión borra la sesión y vuelve al login', async ({ page }) => {
   await mockGateway(page)
   await page.goto('/login')
   await ingresar(page, 'guardia@urgentia.local', 'Agente123!')
-  await expect(page).toHaveURL(/\/tickets$/)
+  await expect(page).toHaveURL(INICIO)
 
   await page.getByRole('button', { name: 'Cerrar sesión' }).click()
 
@@ -209,7 +221,8 @@ test('un 401 durante el uso cierra la sesión, avisa y permite retomar', async (
   const estado = await mockGateway(page)
   await page.goto('/login')
   await ingresar(page, 'guardia@urgentia.local', 'Agente123!')
-  await expect(page).toHaveURL(/\/tickets$/)
+  await expect(page).toHaveURL(INICIO)
+  await page.goto('/tickets')
 
   // Antes de cambiar el mock, la bandeja tiene que haber hecho su primera consulta:
   // si no, esa consulta se llevaría el 401 desde la página anterior.
@@ -265,7 +278,7 @@ test('la sesión se comparte entre pestañas y cerrar sesión en una cierra las 
   await mockGateway(page)
   await page.goto('/login')
   await ingresar(page, 'guardia@urgentia.local', 'Agente123!')
-  await expect(page).toHaveURL(/\/tickets$/)
+  await expect(page).toHaveURL(INICIO)
 
   const otraPestana = await page.context().newPage()
   await mockGateway(otraPestana)
@@ -289,8 +302,8 @@ test('si otra pestaña inicia sesión, la que estaba en el login la toma', async
   await mockGateway(otraPestana)
   await otraPestana.goto('/login')
   await ingresar(otraPestana, 'guardia@urgentia.local', 'Agente123!')
-  await expect(otraPestana).toHaveURL(/\/tickets$/)
+  await expect(otraPestana).toHaveURL(INICIO)
 
-  await expect(page).toHaveURL(/\/tickets$/)
+  await expect(page).toHaveURL(INICIO)
   await expect(page.getByText('Gustavo Guardia')).toBeVisible()
 })
