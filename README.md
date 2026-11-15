@@ -69,17 +69,18 @@ El preview en http://localhost:4173 también requiere autorización si consulta 
 
 Estas son rutas del navegador, no endpoints nuevos.
 
-| Ruta               | Pantalla                                      | Responsable | Estado       |
-| ------------------ | --------------------------------------------- | ----------- | ------------ |
-| /                  | Inicio y navegación                           | P6          | Implementado |
-| /login             | Login y sesión                                | P3          | Implementado |
-| /tickets           | Bandeja con filtros y paginación              | P6          | Implementado |
-| /tickets/:ticketId | Detalle, asignación, estado y reclasificación | P6          | Implementado |
-| /reportes          | Resumen, SLA y listado                        | P6          | Implementado |
-| /notificaciones    | Consulta y filtros                            | P6          | Implementado |
-| /tickets/nuevo     | Crear ticket                                  | P3          | Implementado |
-| /mis-tickets       | Tickets del solicitante                       | P3          | Pendiente    |
-| /usuarios          | Alta y listado                                | P3          | Pendiente    |
+| Ruta                   | Pantalla                                      | Responsable | Estado       |
+| ---------------------- | --------------------------------------------- | ----------- | ------------ |
+| /                      | Inicio y navegación                           | P6          | Implementado |
+| /login                 | Login y sesión                                | P3          | Implementado |
+| /tickets               | Bandeja con filtros y paginación              | P6          | Implementado |
+| /tickets/:ticketId     | Detalle, asignación, estado y reclasificación | P6          | Implementado |
+| /reportes              | Resumen, SLA y listado                        | P6          | Implementado |
+| /notificaciones        | Consulta y filtros                            | P6          | Implementado |
+| /tickets/nuevo         | Crear ticket                                  | P3          | Implementado |
+| /mis-tickets           | Tickets del solicitante                       | P3          | Implementado |
+| /mis-tickets/:ticketId | Detalle de solo lectura del solicitante       | P3          | Implementado |
+| /usuarios              | Alta y listado                                | P3          | Pendiente    |
 
 Bandeja, detalle, reportes y notificaciones requieren AGENTE o ADMIN. Usuarios
 requiere ADMIN. Mis tickets está reservado al SOLICITANTE; crear ticket admite
@@ -90,6 +91,12 @@ Crear ticket valida los largos del contrato (título de 5 a 120 caracteres,
 descripción de 10 a 2000) antes de enviar y muestra el resultado: estado,
 prioridad y plazo, o un aviso si la IA todavía no lo clasificó. No reintenta
 solo: si se corta la conexión, avisa que el ticket puede haberse creado.
+
+Mis tickets lista solo los tickets del solicitante (los filtra el backend) y
+tiene su propio detalle de solo lectura. Mientras un ticket está pendiente de
+clasificación, consulta cada cinco segundos solo ese ticket
+(`GET /api/tickets/{id}`) y lo actualiza en el lugar, sin recargar la lista;
+sin pendientes o con la pestaña oculta, no consulta.
 
 Los filtros se guardan en la URL. El detalle consulta cada cinco segundos
 mientras el ticket siga pendiente de clasificación y la pestaña esté visible.

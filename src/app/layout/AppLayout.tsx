@@ -22,7 +22,7 @@ export function AppLayout() {
     secciones.find((seccion) => seccion.ruta === pathname)?.titulo ??
     (pathname === '/'
       ? 'Inicio'
-      : pathname.startsWith('/tickets/')
+      : pathname.startsWith('/tickets/') || pathname.startsWith('/mis-tickets/')
         ? 'Detalle del ticket'
         : 'Página no encontrada')
   useEffect(() => {

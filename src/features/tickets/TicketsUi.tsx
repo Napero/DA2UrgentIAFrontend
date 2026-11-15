@@ -105,7 +105,14 @@ type FilaTicket = Pick<
   Ticket,
   'id' | 'titulo' | 'estado' | 'prioridad' | 'fechaLimiteSla' | 'fechaCreacion'
 > & { categoria?: Categoria | null }
-export function TablaTickets({ tickets }: { tickets: FilaTicket[] }) {
+// rutaDetalle permite reusar la tabla en Mis tickets, cuyo detalle es otra pantalla.
+export function TablaTickets({
+  tickets,
+  rutaDetalle = '/tickets/',
+}: {
+  tickets: FilaTicket[]
+  rutaDetalle?: '/tickets/' | '/mis-tickets/'
+}) {
   return (
     <div className="table-scroll">
       <table className="data-table">
@@ -126,7 +133,7 @@ export function TablaTickets({ tickets }: { tickets: FilaTicket[] }) {
               <td>
                 <Link
                   className="ticket-link"
-                  to={'/tickets/' + encodeURIComponent(ticket.id)}
+                  to={rutaDetalle + encodeURIComponent(ticket.id)}
                 >
                   {ticket.titulo}
                 </Link>
