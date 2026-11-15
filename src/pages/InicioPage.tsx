@@ -1,19 +1,41 @@
 import { Link } from 'react-router'
+import type { Rol } from '../shared/api/types'
+import { useSesion } from '../shared/session/context'
 import { Icono, type NombreIcono } from '../shared/ui/Icono'
 
+// Cada acceso se muestra solo a los roles que pueden entrar a esa pantalla (las mismas
+// reglas que las rutas de App.tsx). Sin sesión se ven los de la atención: al entrar piden login.
 const accesos: {
   ruta: string
   titulo: string
   descripcion: string
   icono: NombreIcono
   etiqueta: string
+  roles: readonly Rol[]
 }[] = [
+  {
+    ruta: '/mis-tickets',
+    titulo: 'Mis tickets',
+    descripcion: 'Seguí el avance de tus solicitudes en un solo lugar.',
+    icono: 'propios',
+    etiqueta: 'Ver mis tickets',
+    roles: ['SOLICITANTE'],
+  },
+  {
+    ruta: '/tickets/nuevo',
+    titulo: 'Crear un ticket',
+    descripcion: 'Contanos qué pasó para que podamos ayudarte.',
+    icono: 'mas',
+    etiqueta: 'Crear ticket',
+    roles: ['SOLICITANTE'],
+  },
   {
     ruta: '/tickets',
     titulo: 'Bandeja de tickets',
     descripcion: 'Encontrá cada solicitud y organizá su atención.',
     icono: 'ticket',
     etiqueta: 'Ver bandeja',
+    roles: ['AGENTE', 'ADMIN'],
   },
   {
     ruta: '/reportes',
@@ -21,6 +43,7 @@ const accesos: {
     descripcion: 'Seguí las prioridades y los tiempos de respuesta.',
     icono: 'reportes',
     etiqueta: 'Ver reportes',
+    roles: ['AGENTE', 'ADMIN'],
   },
   {
     ruta: '/notificaciones',
@@ -28,10 +51,17 @@ const accesos: {
     descripcion: 'Mantenete al tanto de las novedades de los tickets.',
     icono: 'notificaciones',
     etiqueta: 'Ver novedades',
+    roles: ['AGENTE', 'ADMIN'],
   },
 ]
 
 export function InicioPage() {
+  const { sesion } = useSesion()
+  const visibles = accesos.filter((acceso) =>
+    sesion
+      ? acceso.roles.includes(sesion.usuario.rol)
+      : !acceso.roles.includes('SOLICITANTE'),
+  )
   return (
     <>
       <section className="hero" aria-labelledby="inicio-titulo">
@@ -77,7 +107,7 @@ export function InicioPage() {
           <p>Un lugar para cada parte de la atención.</p>
         </div>
         <div className="access-grid">
-          {accesos.map((acceso) => (
+          {visibles.map((acceso) => (
             <Link to={acceso.ruta} key={acceso.ruta} className="access-card">
               <span className="access-icon">
                 <Icono nombre={acceso.icono} size={24} />
