@@ -13,6 +13,8 @@ import { RequiereRol } from '../shared/session/RequiereRol'
 import { BandejaPage } from '../features/tickets/BandejaPage'
 import { DetallePage } from '../features/tickets/DetallePage'
 import { CrearTicketPage } from '../features/tickets/CrearTicketPage'
+import { MisTicketsPage } from '../features/tickets/MisTicketsPage'
+import { MiTicketPage } from '../features/tickets/MiTicketPage'
 import { ReportesPage } from '../features/reportes/ReportesPage'
 import { NotificacionesPage } from '../features/notificaciones/NotificacionesPage'
 
@@ -52,6 +54,22 @@ export function App(props: AppProps) {
               }
             />
             <Route
+              path="/mis-tickets"
+              element={
+                <RequiereRol roles={['SOLICITANTE']}>
+                  <MisTicketsPage />
+                </RequiereRol>
+              }
+            />
+            <Route
+              path="/mis-tickets/:ticketId"
+              element={
+                <RequiereRol roles={['SOLICITANTE']}>
+                  <MiTicketPage />
+                </RequiereRol>
+              }
+            />
+            <Route
               path="/reportes"
               element={
                 <RequiereRol roles={['AGENTE', 'ADMIN']}>
@@ -68,21 +86,13 @@ export function App(props: AppProps) {
               }
             />
             {secciones
-              .filter((seccion) =>
-                ['/mis-tickets', '/usuarios'].includes(seccion.ruta),
-              )
+              .filter((seccion) => ['/usuarios'].includes(seccion.ruta))
               .map((seccion) => (
                 <Route
                   key={seccion.ruta}
                   path={seccion.ruta}
                   element={
-                    <RequiereRol
-                      roles={
-                        seccion.ruta === '/usuarios'
-                          ? ['ADMIN']
-                          : ['SOLICITANTE']
-                      }
-                    >
+                    <RequiereRol roles={['ADMIN']}>
                       <SeccionPendientePage seccion={seccion} />
                     </RequiereRol>
                   }
