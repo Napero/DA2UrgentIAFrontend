@@ -14,7 +14,7 @@
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "node --experimental-strip-types --test src/shared/api/client.test.ts src/features/tickets/model.test.ts src/shared/session/almacenamiento.test.ts src/features/tickets/crearTicket.test.ts src/features/tickets/seguimiento.test.ts",
+    "test": "node --experimental-strip-types --test src/shared/api/client.test.ts src/features/tickets/model.test.ts src/shared/session/almacenamiento.test.ts src/features/tickets/crearTicket.test.ts src/features/tickets/seguimiento.test.ts src/features/usuarios/usuarios.test.ts",
     "api:generate": "node scripts/generate-api-types.mjs",
     "check": "npm run format:check && npm run lint && npm test && npm run build",
     "api:generate:all": "node scripts/api-contracts.mjs",
