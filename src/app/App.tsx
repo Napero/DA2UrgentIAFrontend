@@ -3,8 +3,6 @@ import { AppLayout } from './layout/AppLayout'
 import { InicioPage } from '../pages/InicioPage'
 import { LoginPage } from '../pages/LoginPage'
 import { NoEncontradoPage } from '../pages/NoEncontradoPage'
-import { SeccionPendientePage } from '../pages/SeccionPendientePage'
-import { secciones } from './navigation'
 import {
   SesionProvider,
   type SesionProviderProps,
@@ -15,6 +13,7 @@ import { DetallePage } from '../features/tickets/DetallePage'
 import { CrearTicketPage } from '../features/tickets/CrearTicketPage'
 import { MisTicketsPage } from '../features/tickets/MisTicketsPage'
 import { MiTicketPage } from '../features/tickets/MiTicketPage'
+import { UsuariosPage } from '../features/usuarios/UsuariosPage'
 import { ReportesPage } from '../features/reportes/ReportesPage'
 import { NotificacionesPage } from '../features/notificaciones/NotificacionesPage'
 
@@ -85,19 +84,14 @@ export function App(props: AppProps) {
                 </RequiereRol>
               }
             />
-            {secciones
-              .filter((seccion) => ['/usuarios'].includes(seccion.ruta))
-              .map((seccion) => (
-                <Route
-                  key={seccion.ruta}
-                  path={seccion.ruta}
-                  element={
-                    <RequiereRol roles={['ADMIN']}>
-                      <SeccionPendientePage seccion={seccion} />
-                    </RequiereRol>
-                  }
-                />
-              ))}
+            <Route
+              path="/usuarios"
+              element={
+                <RequiereRol roles={['ADMIN']}>
+                  <UsuariosPage />
+                </RequiereRol>
+              }
+            />
             <Route path="*" element={<NoEncontradoPage />} />
           </Route>
         </Routes>

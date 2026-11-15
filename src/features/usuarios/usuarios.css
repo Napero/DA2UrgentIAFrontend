@@ -1,0 +1,62 @@
+.usuario-alta {
+  padding: 28px;
+  margin-bottom: 24px;
+}
+.usuario-alta h2 {
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: -0.3px;
+  margin-bottom: 18px;
+}
+.usuario-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+.usuario-form label {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #425b4e;
+}
+.usuario-form input,
+.usuario-form select {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #cbd8cc;
+  border-radius: 7px;
+  padding: 10px 12px;
+  background: #fff;
+  color: #203b35;
+  font-size: 14px;
+}
+.usuario-form input:focus-visible,
+.usuario-form select:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+.usuario-form [aria-invalid='true'] {
+  border-color: #c9774a;
+}
+.usuario-ayuda,
+.usuario-error {
+  font-size: 12px;
+  font-weight: 400;
+}
+.usuario-ayuda {
+  color: var(--color-muted);
+}
+.usuario-error {
+  color: #a4501f;
+}
+.usuario-aviso {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+.usuario-form button {
+  grid-column: 1 / -1;
+  justify-self: start;
+  min-width: 160px;
+}
