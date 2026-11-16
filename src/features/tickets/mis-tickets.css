@@ -1,0 +1,5 @@
+.mis-tickets-acciones {
+  display: flex;
+  justify-content: flex-end;
+  margin: -8px 0 18px;
+}
